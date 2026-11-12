@@ -1,4 +1,6 @@
-# JobShield AI — Fake Job Scam Detection System
+# fake_job_scam_detection_using_ml
+
+## JobShield AI — Fake Job Scam Detection System
 
 A full-stack web application that helps job seekers identify whether a job
 posting is **genuine** or **fraudulent** using Machine Learning and rule-based
@@ -16,7 +18,7 @@ red flag detection.
 4. [Setup Instructions](#setup-instructions)
 5. [Training the ML Model](#training-the-ml-model)
 6. [Running the Application](#running-the-application)
-7. [Default Admin Login](#default-admin-login)
+7. [Admin Login](#admin-login)
 8. [API Endpoints](#api-endpoints)
 9. [Project Documentation](#project-documentation)
 
