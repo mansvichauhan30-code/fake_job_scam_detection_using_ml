@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel - JobShield AI{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="mb-4">
+            <div class="section-eyebrow">Administration</div>
+            <h2>Admin Panel</h2>
+            <p class="text-muted">System-wide statistics and user management.</p>
+        </div>
+
+        <!-- ============ STAT CARDS ============ -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3 col-6">
+                <div class="stat-card total">
+                    <div class="stat-label">Total Users</div>
+                    <div class="stat-number">{{ total_users }}</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card">
+                    <div class="stat-label">Total Analyses</div>
+                    <div class="stat-number">{{ total_analyses }}</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card fake">
+                    <div class="stat-label">Fake Jobs Found</div>
+                    <div class="stat-number">{{ total_fake }}</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6">
+                <div class="stat-card genuine">
+                    <div class="stat-label">Genuine Jobs Found</div>
+                    <div class="stat-number">{{ total_genuine }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============ USERS TABLE ============ -->
+        <div class="panel-card mb-4">
+            <h5 class="mb-3"><i class="bi bi-people me-2"></i>Registered Users</h5>
+            <div class="table-responsive">
+                <table class="table table-custom align-middle">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>{{ u.full_name }}</td>
+                            <td>{{ u.email }}</td>
+                            <td>
+                                {% if u.role == 'admin' %}
+                                    <span class="badge bg-dark">Admin</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">User</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ u.created_at.strftime('%d %b %Y') }}</td>
+                            <td>
+                                {% if u.role != 'admin' %}
+                                <form method="POST" action="{{ url_for('admin_delete_user', user_id=u.user_id) }}" onsubmit="return confirm('Delete this user and all their reports?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============ RECENT ANALYSES TABLE ============ -->
+        <div class="panel-card">
+            <h5 class="mb-3"><i class="bi bi-list-task me-2"></i>Recent Analyses (All Users)</h5>
+            <div class="table-responsive">
+                <table class="table table-custom align-middle">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Analyzed By</th>
+                            <th>Verdict</th>
+                            <th>Scam Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in all_analyses %}
+                        <tr>
+                            <td>{{ item.job_title }}</td>
+                            <td>{{ item.full_name }} ({{ item.email }})</td>
+                            <td>
+                                {% if item.prediction == 'FAKE' %}
+                                    <span class="verdict-badge verdict-fake">FAKE</span>
+                                {% else %}
+                                    <span class="verdict-badge verdict-genuine">GENUINE</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ "%.1f"|format(item.scam_probability|float) }}%</td>
+                            <td>{{ item.created_at.strftime('%d %b %Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

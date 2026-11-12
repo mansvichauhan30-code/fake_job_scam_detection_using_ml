@@ -1,0 +1,433 @@
+/* ============================================================
+   Fake Job Scam Detection System - Custom Styles
+   Theme: "Verification Desk" - deep navy + amber alert accent
+   ============================================================ */
+
+:root {
+    --navy-deep: #0d1b2a;
+    --navy-mid: #1b2a41;
+    --slate: #415a77;
+    --paper: #f7f6f2;
+    --amber: #ffb703;
+    --danger-red: #e63946;
+    --safe-green: #2a9d8f;
+    --text-muted: #6c757d;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--paper);
+    color: var(--navy-deep);
+}
+
+h1, h2, h3, h4, h5, .display-font {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    letter-spacing: -0.01em;
+}
+
+/* ── DARK MODE ── */
+[data-theme="dark"] {
+    --navy-deep: #0d1b2a;
+    --navy-mid: #1b2a41;
+    --paper: #0f1923;
+    --paper-alt: #1a2535;
+    --text-main: #e8e6e0;
+    --text-muted: #8fa3b1;
+    --card-bg: #1b2a41;
+    --card-border: #2a3f57;
+    --amber: #ffb703;
+}
+
+[data-theme="light"] {
+    --paper: #f7f6f2;
+    --paper-alt: #efece4;
+    --text-main: #0d1b2a;
+    --card-bg: #ffffff;
+    --card-border: #e3e0d8;
+}
+
+/* Dark mode body */
+[data-theme="dark"] body {
+    background-color: #0f1923;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .panel-card {
+    background-color: #1b2a41;
+    border-color: #2a3f57;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .stat-card {
+    background-color: #1b2a41;
+    border-color: #2a3f57;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .feature-card {
+    background-color: #1b2a41;
+    border-color: #2a3f57;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .auth-card {
+    background-color: #1b2a41;
+    border-color: #2a3f57;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: #0f1923;
+    border-color: #2a3f57;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .form-select:focus {
+    background-color: #0f1923;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .table {
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+    background-color: #2a3f57;
+    color: #e8e6e0;
+}
+
+[data-theme="dark"] .bg-paper-alt {
+    background-color: #162030 !important;
+}
+
+[data-theme="dark"] .text-muted {
+    color: #8fa3b1 !important;
+}
+
+[data-theme="dark"] .flag-item {
+    border-color: #2a3f57;
+}
+
+[data-theme="dark"] .flag-item.triggered {
+    background-color: rgba(230, 57, 70, 0.15);
+}
+
+[data-theme="dark"] .flag-item.clear {
+    background-color: rgba(42, 157, 143, 0.1);
+}
+
+[data-theme="dark"] .score-gauge-inner {
+    background-color: #1b2a41;
+}
+
+[data-theme="dark"] dt {
+    color: #8fa3b1;
+}
+
+/* ---------------- Navbar ---------------- */
+.navbar-custom {
+    background-color: var(--navy-deep);
+}
+
+.navbar-custom .navbar-brand {
+    font-family: 'Georgia', serif;
+    font-weight: 700;
+    color: var(--paper) !important;
+    letter-spacing: 0.02em;
+}
+
+.navbar-custom .nav-link {
+    color: #cdd7e1 !important;
+    font-weight: 500;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+    color: var(--amber) !important;
+}
+
+.brand-mark {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--amber);
+    margin-right: 8px;
+    transform: rotate(45deg);
+}
+
+/* ---------------- Hero ---------------- */
+.hero-section {
+    background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-mid) 100%);
+    color: var(--paper);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.hero-section .lead {
+    color: #cdd7e1;
+    font-size: 1.2rem;
+}
+
+.btn-amber {
+    background-color: var(--amber);
+    border: none;
+    color: var(--navy-deep);
+    font-weight: 600;
+    padding: 0.65rem 1.75rem;
+    border-radius: 4px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-amber:hover {
+    background-color: #ffc63d;
+    color: var(--navy-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(255, 183, 3, 0.35);
+}
+
+.btn-outline-paper {
+    border: 1px solid #cdd7e1;
+    color: var(--paper);
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.btn-outline-paper:hover {
+    background-color: rgba(255,255,255,0.08);
+    color: var(--paper);
+}
+
+/* ---------------- Feature Cards ---------------- */
+.feature-card {
+    border: 1px solid #e3e0d8;
+    border-radius: 6px;
+    padding: 28px;
+    height: 100%;
+    background: #ffffff;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.feature-card:hover {
+    box-shadow: 0 8px 24px rgba(13, 27, 42, 0.08);
+    transform: translateY(-3px);
+}
+
+.feature-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 6px;
+    background: var(--navy-deep);
+    color: var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+}
+
+/* ---------------- Cards / Panels ---------------- */
+.panel-card {
+    background: #ffffff;
+    border: 1px solid #e3e0d8;
+    border-radius: 6px;
+    padding: 24px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e3e0d8;
+    border-left: 4px solid var(--navy-deep);
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.stat-card.fake { border-left-color: var(--danger-red); }
+.stat-card.genuine { border-left-color: var(--safe-green); }
+.stat-card.total { border-left-color: var(--amber); }
+
+.stat-number {
+    font-family: 'Georgia', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--navy-deep);
+}
+
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ---------------- Scam Score Gauge ---------------- */
+.score-gauge {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    background: conic-gradient(var(--score-color) calc(var(--score-pct) * 1%), #e9ecef 0);
+}
+
+.score-gauge-inner {
+    width: 142px;
+    height: 142px;
+    border-radius: 50%;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.score-gauge-inner .score-value {
+    font-family: 'Georgia', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+/* ---------------- Verdict Badges ---------------- */
+.verdict-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    font-size: 0.95rem;
+}
+
+.verdict-fake {
+    background-color: rgba(230, 57, 70, 0.12);
+    color: var(--danger-red);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+}
+
+.verdict-genuine {
+    background-color: rgba(42, 157, 143, 0.12);
+    color: var(--safe-green);
+    border: 1px solid rgba(42, 157, 143, 0.3);
+}
+
+/* ---------------- Red Flags List ---------------- */
+.flag-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    border: 1px solid #e3e0d8;
+}
+
+.flag-item.triggered {
+    background-color: rgba(230, 57, 70, 0.06);
+    border-color: rgba(230, 57, 70, 0.25);
+}
+
+.flag-item.clear {
+    background-color: rgba(42, 157, 143, 0.05);
+    border-color: rgba(42, 157, 143, 0.2);
+}
+
+.flag-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.flag-item.triggered .flag-icon { color: var(--danger-red); }
+.flag-item.clear .flag-icon { color: var(--safe-green); }
+
+/* ---------------- Auth Pages ---------------- */
+.auth-wrapper {
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+}
+
+.auth-card {
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e3e0d8;
+    padding: 40px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 10px 40px rgba(13, 27, 42, 0.06);
+}
+
+.auth-card .brand-mark {
+    width: 14px;
+    height: 14px;
+}
+
+/* ---------------- Forms ---------------- */
+.form-control:focus, .form-select:focus {
+    border-color: var(--navy-mid);
+    box-shadow: 0 0 0 0.2rem rgba(27, 42, 65, 0.15);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--navy-deep);
+    font-size: 0.9rem;
+}
+
+/* ---------------- Tables ---------------- */
+.table-custom thead {
+    background-color: var(--navy-deep);
+    color: var(--paper);
+}
+
+.table-custom thead th {
+    border: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* ---------------- Footer ---------------- */
+.footer-custom {
+    background-color: var(--navy-deep);
+    color: #cdd7e1;
+    padding: 30px 0;
+    font-size: 0.9rem;
+}
+
+.footer-custom a {
+    color: var(--amber);
+    text-decoration: none;
+}
+
+/* ---------------- Misc ---------------- */
+.section-eyebrow {
+    color: var(--amber);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.bg-paper-alt {
+    background-color: #efece4;
+}
+
+@media (max-width: 768px) {
+    .hero-section h1 { font-size: 2.2rem; }
+    .score-gauge { width: 150px; height: 150px; }
+    .score-gauge-inner { width: 118px; height: 118px; }
+}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Analysis Report - JobShield AI{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+
+                <div class="mb-4">
+                    <div class="section-eyebrow">Analysis Report #{{ analysis.analysis_id }}</div>
+                    <h2>{{ analysis.job_title }}</h2>
+                    <p class="text-muted mb-0">
+                        Analyzed on {{ analysis.created_at.strftime('%d %b %Y, %I:%M %p') }}
+                        {% if analysis.location %} &middot; {{ analysis.location }}{% endif %}
+                    </p>
+                </div>
+
+                <!-- ============ VERDICT + SCORE ============ -->
+                <div class="panel-card mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-4 text-center mb-3 mb-md-0">
+                            {% set score = analysis.scam_probability|float %}
+                            {% if score >= 50 %}
+                                {% set gauge_color = '#e63946' %}
+                            {% elif score >= 25 %}
+                                {% set gauge_color = '#ffb703' %}
+                            {% else %}
+                                {% set gauge_color = '#2a9d8f' %}
+                            {% endif %}
+                            <div class="score-gauge" style="--score-pct: {{ score }}; --score-color: {{ gauge_color }};">
+                                <div class="score-gauge-inner">
+                                    <div class="score-value" style="color: {{ gauge_color }};">{{ "%.1f"|format(score) }}%</div>
+                                    <div class="text-muted small">Scam Probability</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="text-muted mb-2">Verdict</h5>
+                            {% if analysis.prediction == 'FAKE' %}
+                                <span class="verdict-badge verdict-fake mb-3 d-inline-block">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i> LIKELY FAKE / SCAM
+                                </span>
+                            {% else %}
+                                <span class="verdict-badge verdict-genuine mb-3 d-inline-block">
+                                    <i class="bi bi-check-circle-fill me-1"></i> LIKELY GENUINE
+                                </span>
+                            {% endif %}
+                            <p class="mb-1"><strong>Red Flags Detected:</strong> {{ analysis.red_flag_count }} out of 7</p>
+                            <p class="mb-0 text-muted">This score combines our trained Machine Learning model's prediction with rule-based red flag analysis.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============ AI EXPLANATION ============ -->
+                <div class="panel-card mb-4">
+                    <h5><i class="bi bi-chat-square-text me-2"></i>AI-Generated Explanation</h5>
+                    <hr>
+                    <p style="white-space: pre-line;">{{ analysis.ai_explanation }}</p>
+                </div>
+
+                <!-- ============ RED FLAGS ============ -->
+                <div class="panel-card mb-4">
+                    <h5><i class="bi bi-flag me-2"></i>Red Flag Checklist</h5>
+                    <hr>
+                    {% for flag in analysis.red_flags_parsed %}
+                        <div class="flag-item {{ 'triggered' if flag.detected else 'clear' }}">
+                            <div class="flag-icon">
+                                {% if flag.detected %}
+                                    <i class="bi bi-x-circle-fill"></i>
+                                {% else %}
+                                    <i class="bi bi-check-circle-fill"></i>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>{{ flag.name }}</strong>
+                                <div class="text-muted small">{{ flag.description }}</div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- ============ JOB DETAILS SUBMITTED ============ -->
+                <div class="panel-card mb-4">
+                    <h5><i class="bi bi-file-text me-2"></i>Submitted Job Details</h5>
+                    <hr>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-3">Job Title</dt>
+                        <dd class="col-sm-9">{{ analysis.job_title }}</dd>
+
+                        <dt class="col-sm-3">Salary</dt>
+                        <dd class="col-sm-9">{{ analysis.salary or "Not specified" }}</dd>
+
+                        <dt class="col-sm-3">Location</dt>
+                        <dd class="col-sm-9">{{ analysis.location or "Not specified" }}</dd>
+
+                        <dt class="col-sm-3">Email Domain</dt>
+                        <dd class="col-sm-9">{{ analysis.company_email_domain or "Not specified" }}</dd>
+
+                        <dt class="col-sm-3">Company Profile</dt>
+                        <dd class="col-sm-9">{{ analysis.company_profile or "Not specified" }}</dd>
+
+                        <dt class="col-sm-3">Description</dt>
+                        <dd class="col-sm-9">{{ analysis.job_description }}</dd>
+
+                        <dt class="col-sm-3">Requirements</dt>
+                        <dd class="col-sm-9">{{ analysis.requirements or "Not specified" }}</dd>
+                    </dl>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('analyze') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-plus-circle me-1"></i> Analyze Another Job
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-amber">
+                        <i class="bi bi-speedometer2 me-1"></i> Go to Dashboard
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

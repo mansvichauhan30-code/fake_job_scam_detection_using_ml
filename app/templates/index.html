@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}JobShield AI - Fake Job Scam Detection{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="section-eyebrow mb-2">AI-Powered Job Verification</div>
+                <h1 class="mb-3">Don't fall for a fake job offer. Verify it first.</h1>
+                <p class="lead mb-4">
+                    Paste any job posting and our Machine Learning engine analyzes the text,
+                    salary, company details, and language patterns to flag scams in seconds —
+                    with a clear scam probability score and a plain-English explanation.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    {% if session.user_id %}
+                        <a href="{{ url_for('analyze') }}" class="btn btn-amber btn-lg">Analyze a Job Posting</a>
+                    {% else %}
+                        <a href="{{ url_for('register') }}" class="btn btn-amber btn-lg">Create Free Account</a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-paper btn-lg">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-5 d-none d-lg-block text-center">
+                <i class="bi bi-shield-fill-check" style="font-size: 14rem; color: rgba(255,183,3,0.25);"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="py-5 bg-paper-alt">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="section-eyebrow">How It Works</div>
+            <h2>Seven layers of scam detection</h2>
+            <p class="text-muted">Every job posting is checked against ML predictions and rule-based red flags.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-cpu"></i></div>
+                    <h5>ML Classification</h5>
+                    <p class="text-muted mb-0">A trained Logistic Regression model analyzes job text patterns to classify postings as fake or genuine.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-percent"></i></div>
+                    <h5>Scam Probability Score</h5>
+                    <p class="text-muted mb-0">Get a 0-100% score showing how likely a job posting is to be fraudulent.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-flag"></i></div>
+                    <h5>Red Flag Detection</h5>
+                    <p class="text-muted mb-0">Detects unrealistic salary, missing company info, money requests, suspicious emails, and grammar issues.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-chat-square-text"></i></div>
+                    <h5>AI Explanation</h5>
+                    <p class="text-muted mb-0">Understand exactly why a posting was flagged with a plain-English breakdown.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-speedometer2"></i></div>
+                    <h5>Personal Dashboard</h5>
+                    <p class="text-muted mb-0">Track total jobs analyzed, fake vs genuine counts, and your recent activity.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="bi bi-search"></i></div>
+                    <h5>Search Past Reports</h5>
+                    <p class="text-muted mb-0">Search and filter all your previous analyses by title or verdict.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="mb-3">Stay one step ahead of job scams</h2>
+        <p class="text-muted mb-4">Free for job seekers. No credit card required.</p>
+        {% if not session.user_id %}
+        <a href="{{ url_for('register') }}" class="btn btn-amber btn-lg">Get Started for Free</a>
+        {% else %}
+        <a href="{{ url_for('analyze') }}" class="btn btn-amber btn-lg">Analyze a Job Now</a>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

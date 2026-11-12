@@ -1,0 +1,208 @@
+<!-- dashboard.html -->
+{% extends "base.html" %}
+{% block title %}Dashboard - JobShield AI{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="mb-4">
+            <div class="section-eyebrow">Your Activity</div>
+            <h2>Welcome back, {{ session.full_name.split(' ')[0] }}</h2>
+            <p class="text-muted">Here's a summary of your job analysis activity.</p>
+        </div>
+
+        <!-- STAT CARDS -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="stat-card total">
+                    <div class="stat-label">Total Jobs Analyzed</div>
+                    <div class="stat-number">{{ total_jobs }}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card fake">
+                    <div class="stat-label">Fake Jobs Detected</div>
+                    <div class="stat-number">{{ fake_jobs }}</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card genuine">
+                    <div class="stat-label">Genuine Jobs Detected</div>
+                    <div class="stat-number">{{ genuine_jobs }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHARTS ROW -->
+        {% if total_jobs > 0 %}
+        <div class="row g-4 mb-4">
+            <!-- Pie Chart -->
+            <div class="col-md-5">
+                <div class="panel-card h-100">
+                    <h5 class="mb-3">
+                        <i class="bi bi-pie-chart me-2"></i>Fake vs Genuine
+                    </h5>
+                    <canvas id="pieChart" height="220"></canvas>
+                </div>
+            </div>
+            <!-- Bar Chart -->
+            <div class="col-md-7">
+                <div class="panel-card h-100">
+                    <h5 class="mb-3">
+                        <i class="bi bi-bar-chart me-2"></i>Last 7 Days Activity
+                    </h5>
+                    <canvas id="barChart" height="220"></canvas>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- RECENT ANALYSES -->
+        <div class="panel-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history me-2"></i>Recent Analyses
+                </h5>
+                <a href="{{ url_for('analyze') }}" class="btn btn-amber btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i> New Analysis
+                </a>
+            </div>
+
+            {% if recent_analyses %}
+            <div class="table-responsive">
+                <table class="table table-custom align-middle">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Verdict</th>
+                            <th>Scam Score</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in recent_analyses %}
+                        <tr>
+                            <td>{{ item.job_title }}</td>
+                            <td>
+                                {% if item.prediction == 'FAKE' %}
+                                    <span class="verdict-badge verdict-fake">FAKE</span>
+                                {% else %}
+                                    <span class="verdict-badge verdict-genuine">GENUINE</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ "%.1f"|format(item.scam_probability|float) }}%</td>
+                            <td>{{ item.created_at.strftime('%d %b %Y') }}</td>
+                            <td>
+                                <a href="{{ url_for('report', analysis_id=item.analysis_id) }}"
+                                   class="btn btn-sm btn-outline-secondary">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-end">
+                <a href="{{ url_for('reports') }}" class="text-decoration-none">
+                    View all reports <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox text-muted" style="font-size: 3rem;"></i>
+                <p class="text-muted mt-3 mb-3">
+                    You haven't analyzed any job postings yet.
+                </p>
+                <a href="{{ url_for('analyze') }}" class="btn btn-amber">
+                    Analyze Your First Job Posting
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+{% if total_jobs > 0 %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // ── PIE CHART ──────────────────────────────────────────
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Fake Jobs', 'Genuine Jobs'],
+            datasets: [{
+                data: [{{ fake_jobs }}, {{ genuine_jobs }}],
+                backgroundColor: ['#e63946', '#2a9d8f'],
+                borderColor: ['#ffffff', '#ffffff'],
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 20, font: { size: 13 } }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const pct = ((context.parsed / total) * 100).toFixed(1);
+                            return ` ${context.label}: ${context.parsed} (${pct}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // ── BAR CHART ──────────────────────────────────────────
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const barLabels = {{ bar_labels | tojson }};
+    const barFake   = {{ bar_fake   | tojson }};
+    const barGenuine = {{ bar_genuine | tojson }};
+
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: barLabels,
+            datasets: [
+                {
+                    label: 'Fake',
+                    data: barFake,
+                    backgroundColor: 'rgba(230, 57, 70, 0.8)',
+                    borderRadius: 4
+                },
+                {
+                    label: 'Genuine',
+                    data: barGenuine,
+                    backgroundColor: 'rgba(42, 157, 143, 0.8)',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: { grid: { display: false } },
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 },
+                    grid: { color: 'rgba(0,0,0,0.05)' }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { padding: 20, font: { size: 13 } }
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

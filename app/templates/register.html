@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Register - JobShield AI{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="text-center mb-4">
+            <span class="brand-mark"></span>
+            <h3 class="d-inline">Create your account</h3>
+            <p class="text-muted mt-2">Start verifying job postings in seconds.</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('register') }}">
+            <div class="mb-3">
+                <label for="full_name" class="form-label">Full Name</label>
+                <input type="text" class="form-control" id="full_name" name="full_name" required placeholder="e.g. Priya Sharma">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="you@example.com">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required minlength="6" placeholder="At least 6 characters">
+            </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required minlength="6" placeholder="Re-enter your password">
+            </div>
+            <button type="submit" class="btn btn-amber w-100 mt-2">Create Account</button>
+        </form>
+
+        <p class="text-center text-muted mt-4 mb-0">
+            Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

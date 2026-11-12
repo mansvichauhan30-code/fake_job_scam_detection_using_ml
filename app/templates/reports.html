@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}My Reports - JobShield AI{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="mb-4">
+            <div class="section-eyebrow">History</div>
+            <h2>My Reports</h2>
+            <p class="text-muted">Search and filter through all your past job analyses.</p>
+        </div>
+
+        <!-- ============ SEARCH & FILTER ============ -->
+        <div class="panel-card mb-4">
+            <form method="GET" action="{{ url_for('reports') }}" class="row g-2 align-items-end">
+                <div class="col-md-6">
+                    <label class="form-label">Search by Job Title</label>
+                    <input type="text" class="form-control" name="q" value="{{ search_query }}" placeholder="e.g. Data Entry, Software Engineer...">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Filter by Verdict</label>
+                    <select class="form-select" name="filter">
+                        <option value="all" {% if filter_type == 'all' %}selected{% endif %}>All</option>
+                        <option value="FAKE" {% if filter_type == 'FAKE' %}selected{% endif %}>Fake Only</option>
+                        <option value="GENUINE" {% if filter_type == 'GENUINE' %}selected{% endif %}>Genuine Only</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-amber w-100"><i class="bi bi-search me-1"></i>Search</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ============ RESULTS ============ -->
+        <div class="panel-card">
+            {% if results %}
+            <div class="table-responsive">
+                <table class="table table-custom align-middle">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Location</th>
+                            <th>Verdict</th>
+                            <th>Scam Score</th>
+                            <th>Red Flags</th>
+                            <th>Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in results %}
+                        <tr>
+                            <td>{{ item.job_title }}</td>
+                            <td>{{ item.location or "-" }}</td>
+                            <td>
+                                {% if item.prediction == 'FAKE' %}
+                                    <span class="verdict-badge verdict-fake">FAKE</span>
+                                {% else %}
+                                    <span class="verdict-badge verdict-genuine">GENUINE</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ "%.1f"|format(item.scam_probability|float) }}%</td>
+                            <td>{{ item.red_flag_count }} / 7</td>
+                            <td>{{ item.created_at.strftime('%d %b %Y') }}</td>
+                            <td>
+                                <a href="{{ url_for('report', analysis_id=item.analysis_id) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-search text-muted" style="font-size: 3rem;"></i>
+                <p class="text-muted mt-3 mb-0">No reports found matching your criteria.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
